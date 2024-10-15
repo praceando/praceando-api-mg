@@ -3,10 +3,11 @@
  * Description: Service for the Conquista entity.
  * Author: Camilla Ucci de Menezes
  * Creation Date: 09/10/2024
- * Last Updated: 09/10/2024
+ * Last Updated: 13/10/2024
  */
 package bloomera.praceando.praceandoapimg.service;
 
+import bloomera.praceando.praceandoapimg.model.Avaliacao;
 import bloomera.praceando.praceandoapimg.model.Conquista;
 import bloomera.praceando.praceandoapimg.repository.ConquistaRepository;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ public class ConquistaService {
      * @return conquista pelo id, se ela existir, caso contrário, retorna null.
      */
     public Conquista getConquistaById(Long id) {
-        Optional<Conquista> conquista = conquistaRepository.findById(id);
+        Optional<Conquista> conquista = conquistaRepository.findByIdConquista(id);
         return conquista.orElse(null);
     }
 
@@ -44,7 +45,7 @@ public class ConquistaService {
      */
     public Conquista deleteConquistaById(Long id) {
         Conquista conquista = getConquistaById(id);
-        if (conquista != null) conquistaRepository.deleteById(id);
+        if (conquista != null) conquistaRepository.delete(conquista);
         return conquista;
     }
 
@@ -64,7 +65,6 @@ public class ConquistaService {
     public Conquista updateConquista(Long id, Conquista conquista) {
         Conquista existingConquista = getConquistaById(id);
         if (existingConquista != null) {
-            existingConquista.setIdConquista(conquista.getIdConquista());
             existingConquista.setNmConquista(conquista.getNmConquista());
             existingConquista.setDsConquista(conquista.getDsConquista());
             existingConquista.setNmTipo(conquista.getNmTipo());

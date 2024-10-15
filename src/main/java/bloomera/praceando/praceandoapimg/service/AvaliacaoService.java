@@ -3,7 +3,7 @@
  * Description: Service for the Avaliacao entity.
  * Author: Camilla Ucci de Menezes
  * Creation Date: 03/10/2024
- * Last Updated: 09/10/2024
+ * Last Updated: 13/10/2024
  */
 package bloomera.praceando.praceandoapimg.service;
 
@@ -36,16 +36,16 @@ public class AvaliacaoService {
      * @return avaliação pelo id, se ela existir, caso contrário, retorna null
      */
     public Avaliacao getAvaliacaoById(Long id) {
-        Optional<Avaliacao> avaliacao = avaliacaoRepository.findById(id);
+        Optional<Avaliacao> avaliacao = avaliacaoRepository.findByIdAvaliacao(id);
         return avaliacao.orElse(null);
     }
 
     /**
-     * @return avaliacao deletado.
+     * @return avaliacao deletada.
      */
     public Avaliacao deleteAvaliacaoById(Long id) {
         Avaliacao avaliacao = getAvaliacaoById(id);
-        if (avaliacao != null) avaliacaoRepository.deleteById(id);
+        if (avaliacao != null) avaliacaoRepository.delete(avaliacao);
         return avaliacao;
     }
 

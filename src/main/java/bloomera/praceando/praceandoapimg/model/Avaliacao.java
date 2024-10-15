@@ -9,6 +9,7 @@ package bloomera.praceando.praceandoapimg.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -27,24 +28,24 @@ import java.util.List;
 @Schema(description = "Representa a avaliação de eventos no sistema Praceando.")
 public class Avaliacao {
     @Id
-    @Schema(description = "Identificador único da avaliação.", example = "66fd42eb50119ee6449ea103")
+    @Schema(description = "Identificador único gerado pelo MongoDB.", example = "66fd42eb50119ee6449ea103")
     private String id;
 
-    @Schema(description = "Identificador da avaliação.", example = "1")
-    @Field(name = "id_recorrencia")
+    @Schema(description = "Identificador lógico da avaliação.", example = "1")
+    @Field(name = "id_avaliacao")
     private Long idAvaliacao;
 
-    @NotBlank(message = "O código do evento da avaliação ('cd_evento') não pode estar vazio.")
+    @NotNull(message = "O código do evento da avaliação ('cd_evento') não pode estar vazio.")
     @Schema(description = "Código do evento associado à avaliação.", example = "1")
     @Field(name = "cd_evento")
     private Long cdEvento;
 
-    @NotBlank(message = "O código do usuário da avaliação ('cd_usuario') não pode estar vazio.")
+    @NotNull(message = "O código do usuário da avaliação ('cd_usuario') não pode estar vazio.")
     @Schema(description = "Código do usuario associado à avaliação.", example = "1")
     @Field(name = "cd_usuario")
     private Long cdUsuario;
 
-    @NotBlank(message = "O nota da avaliação ('nota') não pode estar vazia.")
+    @NotNull(message = "A nota da avaliação ('nota') não pode estar vazia.")
     @Schema(description = "Nota associada à avaliação.", example = "5")
     @Field(name = "nota")
     private Long nrNota;

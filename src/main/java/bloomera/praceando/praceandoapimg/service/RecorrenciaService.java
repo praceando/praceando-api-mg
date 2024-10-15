@@ -3,7 +3,7 @@
  * Description: Service for the Recorrencia entity.
  * Author: Camilla Ucci de Menezes
  * Creation Date: 09/10/2024
- * Last Updated: 09/10/2024
+ * Last Updated: 13/10/2024
  */
 package bloomera.praceando.praceandoapimg.service;
 
@@ -35,7 +35,7 @@ public class RecorrenciaService {
      * @return recorrência pelo id, se ela existir, caso contrário, retorna null.
      */
     public Recorrencia getRecorrenciaById(Long id) {
-        Optional<Recorrencia> recorrencia = recorrenciaRepository.findById(id);
+        Optional<Recorrencia> recorrencia = recorrenciaRepository.findByIdRecorrencia(id);
         return recorrencia.orElse(null);
     }
 
@@ -44,7 +44,7 @@ public class RecorrenciaService {
      */
     public Recorrencia deleteRecorrenciaById(Long id) {
         Recorrencia recorrencia = getRecorrenciaById(id);
-        if (recorrencia != null) recorrenciaRepository.deleteById(id);
+        if (recorrencia != null) recorrenciaRepository.delete(recorrencia);
         return recorrencia;
     }
 
@@ -64,7 +64,6 @@ public class RecorrenciaService {
     public Recorrencia updateRecorrencia(Long id, Recorrencia recorrencia) {
         Recorrencia existingRecorrencia = getRecorrenciaById(id);
         if (existingRecorrencia != null) {
-            existingRecorrencia.setIdRecorrencia(recorrencia.getIdRecorrencia());
             existingRecorrencia.setDsTipo(recorrencia.getDsTipo());
             existingRecorrencia.setDsDiasDaSemana(recorrencia.getDsDiasDaSemana());
             existingRecorrencia.setCdEvento(recorrencia.getCdEvento());
