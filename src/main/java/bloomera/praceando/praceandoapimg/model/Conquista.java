@@ -9,6 +9,7 @@ package bloomera.praceando.praceandoapimg.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -25,9 +26,6 @@ import java.util.List;
 @Document(collection = "avaliacao")
 @Schema(description = "Representa a avaliação de eventos no sistema Praceando.")
 public class Conquista {
-    /*
-qt_polen
-50*/
     @Id
     @Schema(description = "Identificador único da conquista.", example = "66fd42eb50119ee6449ea103")
     private String id;
@@ -51,7 +49,7 @@ qt_polen
     @Field(name = "nm_tipo")
     private String nmTipo;
 
-    @NotBlank(message = "A quantidade de pólen da conquista ('qt_polen') não pode estar vazia.")
+    @NotNull(message = "A quantidade de pólen da conquista ('qt_polen') não pode estar vazia.")
     @Schema(description = "Quantidade de pólen associada à conquista.", example = "50")
     @Field(name = "qt_polen")
     private Long qtPolen;

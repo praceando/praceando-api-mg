@@ -9,6 +9,7 @@ package bloomera.praceando.praceandoapimg.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -42,7 +43,7 @@ public class Recorrencia {
     @Field(name = "ds_dias_da_semana")
     private List<Integer> dsDiasDaSemana;
 
-    @NotBlank(message = "O código do evento da recorrência ('cd_evento') não pode estar vazio.")
+    @NotNull(message = "O código do evento da recorrência ('cd_evento') não pode estar vazio.")
     @Schema(description = "Código do evento associado à recorrência.", example = "1")
     @Field(name = "cd_evento")
     private Long cdEvento;

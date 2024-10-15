@@ -3,7 +3,7 @@
  * Description: Service for the ConquistaUser entity.
  * Author: Camilla Ucci de Menezes
  * Creation Date: 09/10/2024
- * Last Updated: 09/10/2024
+ * Last Updated: 13/10/2024
  */
 package bloomera.praceando.praceandoapimg.service;
 
@@ -35,7 +35,7 @@ public class ConquistaUserService {
      * @return conquista do usuário pelo id, se ela existir, caso contrário, retorna null.
      */
     public ConquistaUser getConquistaUserById(Long id) {
-        Optional<ConquistaUser> conquistaUser = conquistaUserRepository.findById(id);
+        Optional<ConquistaUser> conquistaUser = conquistaUserRepository.findByIdConquistaUser(id);
         return conquistaUser.orElse(null);
     }
 
@@ -44,7 +44,7 @@ public class ConquistaUserService {
      */
     public ConquistaUser deleteConquistaUserById(Long id) {
         ConquistaUser conquistaUser = getConquistaUserById(id);
-        if (conquistaUser != null) conquistaUserRepository.deleteById(id);
+        if (conquistaUser != null) conquistaUserRepository.delete(conquistaUser);
         return conquistaUser;
     }
 
@@ -64,7 +64,6 @@ public class ConquistaUserService {
     public ConquistaUser updateConquistaUser(Long id, ConquistaUser conquistaUser) {
         ConquistaUser existingConquistaUser = getConquistaUserById(id);
         if (existingConquistaUser != null) {
-            existingConquistaUser.setIdRecorrencia(conquistaUser.getIdRecorrencia());
             existingConquistaUser.setCdUsuario(conquistaUser.getCdUsuario());
             existingConquistaUser.setCdConquista(conquistaUser.getCdConquista());
             return conquistaUserRepository.save(existingConquistaUser);
