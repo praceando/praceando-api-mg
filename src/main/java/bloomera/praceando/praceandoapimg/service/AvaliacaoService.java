@@ -3,7 +3,7 @@
  * Description: Service for the Avaliacao entity.
  * Author: Camilla Ucci de Menezes
  * Creation Date: 03/10/2024
- * Last Updated: 13/10/2024
+ * Last Updated: 16/10/2024
  */
 package bloomera.praceando.praceandoapimg.service;
 
@@ -25,10 +25,10 @@ public class AvaliacaoService {
     }
 
     /**
-     * @return uma lista de documentos Avaliação se existirem, ou null se não houver nenhuma avaliação.
+     * @return uma lista de documentos Avaliação do eventos se existirem, ou null se não houver nenhuma avaliação.
      */
-    public List<Avaliacao> getAvaliacoes() {
-        List<Avaliacao> avaliacoes = avaliacaoRepository.findAll();
+    public List<Avaliacao> getAvaliacoes(Long cdEvento) {
+        List<Avaliacao> avaliacoes = avaliacaoRepository.findAvaliacaosByCdEventoOrderByIdAvaliacao(cdEvento);
         return avaliacoes.isEmpty() ? null : avaliacoes;
     }
 
@@ -70,11 +70,19 @@ public class AvaliacaoService {
             existingAvaliacao.setCdUsuario(avaliacao.getCdUsuario());
             existingAvaliacao.setNrNota(avaliacao.getNrNota());
             existingAvaliacao.setDsComentario(avaliacao.getDsComentario());
-            existingAvaliacao.setNrReacao(avaliacao.getNrReacao());
             existingAvaliacao.setDtAtualizacao(avaliacao.getDtAtualizacao());
             return avaliacaoRepository.save(existingAvaliacao);
         } else {
             return null;
         }
+    }
+
+    /**
+     * @param cdEvento Código do evento.
+     * @param cdUsuario Código do usuário.
+     * @return flag indicando se o usuário já avaliou esse evento
+     */
+    public boolean userEvaluated(Long cdEvento, Long cdUsuario) {
+        return avaliacaoRepository.findFirstByCdEventoAndCdUsuario(cdEvento, cdUsuario).isPresent();
     }
 }

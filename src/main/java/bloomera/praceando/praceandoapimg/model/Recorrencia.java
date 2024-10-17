@@ -3,7 +3,7 @@
  * Description: Model for the Recorrencia document.
  * Author: Camilla Ucci de Menezes
  * Creation Date: 03/10/2024
- * Last Updated: 03/10/2024
+ * Last Updated: 16/10/2024
  */
 package bloomera.praceando.praceandoapimg.model;
 
@@ -34,17 +34,17 @@ public class Recorrencia {
     @Field(name = "id_recorrencia")
     private Long idRecorrencia;
 
-    @NotBlank(message = "O tipo da recorrência ('ds_tipo') não pode estar vazio.")
+    @NotBlank(message = "O tipo da recorrência ('nm_tipo') não pode estar vazio.")
     @Schema(description = "Tipo de recorrência.", example = "semanal")
-    @Field(name = "ds_tipo")
-    private String dsTipo;
+    @Field(name = "nm_tipo")
+    private String nmTipo;
 
     @Schema(description = "Dias da semana em que a recorrência ocorre.", example = "[1, 2, 3]")
-    @Field(name = "ds_dias_da_semana")
-    private List<Integer> dsDiasDaSemana;
+    @Field(name = "ds_dias_semana")
+    private List<String> dsDiasDaSemana;
 
-    @NotNull(message = "O código do evento da recorrência ('cd_evento') não pode estar vazio.")
+    @NotNull(message = "O código do evento da recorrência ('id_evento') não pode estar vazio.")
     @Schema(description = "Código do evento associado à recorrência.", example = "1")
-    @Field(name = "cd_evento")
-    private Long cdEvento;
+    @Field(name = "id_evento")
+    private Long idEvento;
 }

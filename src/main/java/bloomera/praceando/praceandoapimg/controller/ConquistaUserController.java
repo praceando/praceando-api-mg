@@ -3,10 +3,11 @@
  * Description: Controller for the ConquistaUser entity.
  * Author: Camilla Ucci de Menezes
  * Creation Date: 14/10/2024
- * Last Updated: 14/10/2024
+ * Last Updated: 16/10/2024
  */
 package bloomera.praceando.praceandoapimg.controller;
 
+import bloomera.praceando.praceandoapimg.model.Conquista;
 import bloomera.praceando.praceandoapimg.model.ConquistaUser;
 import bloomera.praceando.praceandoapimg.service.ConquistaUserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,16 +34,16 @@ public class ConquistaUserController {
         this.conquistaUserService = conquistaUserService;
     }
 
-    @GetMapping("/read")
-    @Operation(summary = "Lista todas as conquistas dos usuários", description = "Retorna uma lista de todas as conquistas dos usuários")
+    @GetMapping("/read/{cdUsuario}")
+    @Operation(summary = "Lista todas as conquistas do usuário", description = "Retorna uma lista de todas as conquistas dos usuário")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Lista de conquistas dos usuários retornada com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Nenhuma conquista de usuário encontrada")
+            @ApiResponse(responseCode = "200", description = "Lista de conquistas do usuário retornada com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Nenhuma conquista do usuário encontrada")
     })
-    public ResponseEntity<?> listarConquistasUsuarios() {
-        List<ConquistaUser> conquistasUsuarios = conquistaUserService.getConquistaUsers();
-        if (conquistasUsuarios != null && !conquistasUsuarios.isEmpty()) {
-            return ResponseEntity.ok(conquistasUsuarios);
+    public ResponseEntity<?> listarConquistasUsuario(@Parameter(description = "ID do usuário cujas conquistas serão retornadas") @PathVariable Long cdUsuario) {
+        List<Conquista> conquistas = conquistaUserService.getConquistaUser(cdUsuario);
+        if (conquistas != null && !conquistas.isEmpty()) {
+            return ResponseEntity.ok(conquistas);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nenhuma conquista de usuário encontrada.");
         }

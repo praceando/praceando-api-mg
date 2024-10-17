@@ -3,7 +3,7 @@
  * Description: Controller for the Recorrencia entity.
  * Author: Camilla Ucci de Menezes
  * Creation Date: 14/10/2024
- * Last Updated: 14/10/2024
+ * Last Updated: 16/10/2024
  */
 package bloomera.praceando.praceandoapimg.controller;
 
@@ -71,6 +71,21 @@ public class RecorrenciaController {
     })
     public ResponseEntity<?> buscarRecorrenciaPorId(@Parameter(description = "ID da recorrência a ser buscada") @PathVariable Long id) {
         Recorrencia recorrencia = recorrenciaService.getRecorrenciaById(id);
+        if (recorrencia != null) {
+            return ResponseEntity.ok(recorrencia);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Recorrência não encontrada.");
+        }
+    }
+
+    @GetMapping("/find_evento/{idEvento}")
+    @Operation(summary = "Busca uma recorrência pelo ID do evento", description = "Retorna uma recorrência pelo ID de seu evento")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Recorrência encontrada com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Recorrência não encontrada")
+    })
+    public ResponseEntity<?> buscarRecorrenciaPorIdEvento(@Parameter(description = "ID da do evento da recorrência a ser buscada") @PathVariable Long idEvento) {
+        Recorrencia recorrencia = recorrenciaService.getRecorrenciaByIdEvento(idEvento);
         if (recorrencia != null) {
             return ResponseEntity.ok(recorrencia);
         } else {
