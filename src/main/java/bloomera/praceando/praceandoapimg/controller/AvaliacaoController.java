@@ -3,7 +3,7 @@
  * Description: Controller for the Avaliacao entity.
  * Author: Camilla Ucci de Menezes
  * Creation Date: 07/10/2024
- * Last Updated: 07/10/2024
+ * Last Updated: 16/10/2024
  */
 package bloomera.praceando.praceandoapimg.controller;
 
@@ -19,7 +19,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/avaliacao")
@@ -33,19 +35,29 @@ public class AvaliacaoController {
         this.avaliacaoService = avaliacaoService;
     }
 
-    @GetMapping("/read")
-    @Operation(summary = "Lista todas as avaliações", description = "Retorna uma lista de todas as avaliações")
+    @GetMapping("/read/{cdEvento}/{cdUsuario}")
+    @Operation(summary = "Lista todas as avaliações do evento", description = "Retorna uma lista de todas as avaliações do evento e uma flag indicando se o usuário já avaliou esse evento")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Lista de avaliações retornada com sucesso"),
             @ApiResponse(responseCode = "404", description = "Nenhuma avaliação encontrada")
     })
-    public ResponseEntity<?> listarAvaliacoes() {
-        List<Avaliacao> avaliacoes = avaliacaoService.getAvaliacoes();
-        if (avaliacoes != null && !avaliacoes.isEmpty()) {
-            return ResponseEntity.ok(avaliacoes);
-        } else {
+    public ResponseEntity<?> listarAvaliacoes(
+            @Parameter(description = "ID do evento cujas avaliações serão buscadas") @PathVariable Long cdEvento,
+            @Parameter(description = "ID do usuário para verificar se já avaliou o evento") @PathVariable Long cdUsuario) {
+
+        List<Avaliacao> avaliacoes = avaliacaoService.getAvaliacoes(cdEvento);
+
+        if (avaliacoes == null || avaliacoes.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nenhuma avaliação encontrada.");
         }
+
+        boolean userEvaluated = avaliacaoService.userEvaluated(cdEvento, cdUsuario);
+
+        Map<String, Object> resposta = new HashMap<>();
+        resposta.put("avaliacoes", avaliacoes);
+        resposta.put("usuarioJaAvaliou", userEvaluated);
+
+        return ResponseEntity.ok(resposta);
     }
 
     @PostMapping("/create")

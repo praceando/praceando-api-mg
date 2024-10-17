@@ -3,7 +3,7 @@
  * Description: Model for the Avaliacao document.
  * Author: Camilla Ucci de Menezes
  * Creation Date: 03/10/2024
- * Last Updated: 07/10/2024
+ * Last Updated: 16/10/2024
  */
 package bloomera.praceando.praceandoapimg.model;
 
@@ -53,10 +53,6 @@ public class Avaliacao {
     @Schema(description = "Comentário da avaliação.", example = "Evento incrível! Superou minhas expectativas.")
     @Field(name = "comentario")
     private String dsComentario;
-
-    @Schema(description = "Reações associadas a avaliação.", example = "[1, 2, 3]")
-    @Field(name = "reacao")
-    private List<Integer> nrReacao;
 
     @Schema(description = "Data e hora da última atualização da avaliação.", example = "2024-08-18T10:00:00")
     @Field(name = "dt_atualizacao")

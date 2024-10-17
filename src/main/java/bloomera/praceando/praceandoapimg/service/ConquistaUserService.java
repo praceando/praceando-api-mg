@@ -3,21 +3,27 @@
  * Description: Service for the ConquistaUser entity.
  * Author: Camilla Ucci de Menezes
  * Creation Date: 09/10/2024
- * Last Updated: 13/10/2024
+ * Last Updated: 16/10/2024
  */
 package bloomera.praceando.praceandoapimg.service;
 
+import bloomera.praceando.praceandoapimg.model.Conquista;
 import bloomera.praceando.praceandoapimg.model.ConquistaUser;
+import bloomera.praceando.praceandoapimg.repository.ConquistaRepository;
 import bloomera.praceando.praceandoapimg.repository.ConquistaUserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ConquistaUserService {
 
     private final ConquistaUserRepository conquistaUserRepository;
+    @Autowired
+    private ConquistaRepository conquistaRepository;
 
     public ConquistaUserService(ConquistaUserRepository conquistaUserRepository) {
         this.conquistaUserRepository = conquistaUserRepository;
@@ -26,9 +32,14 @@ public class ConquistaUserService {
     /**
      * @return uma lista de conquistas de usuários se existirem, ou null se não houver nenhuma.
      */
-    public List<ConquistaUser> getConquistaUsers() {
-        List<ConquistaUser> conquistaUsers = conquistaUserRepository.findAll();
-        return conquistaUsers.isEmpty() ? null : conquistaUsers;
+    public List<Conquista> getConquistaUser(Long cdUsuario) {
+        List<ConquistaUser> conquistaUsers = conquistaUserRepository.findByCdUsuario(cdUsuario);
+
+        List<Long> idsConquista = conquistaUsers.stream()
+                .map(ConquistaUser::getIdConquistaUser)
+                .collect(Collectors.toList());
+
+        return conquistaRepository.findByIdConquistaInOrderByIdConquista(idsConquista);
     }
 
     /**

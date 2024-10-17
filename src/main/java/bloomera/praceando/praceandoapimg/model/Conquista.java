@@ -3,7 +3,7 @@
  * Description: Model for the Conquista document.
  * Author: Camilla Ucci de Menezes
  * Creation Date: 03/10/2024
- * Last Updated: 08/10/2024
+ * Last Updated: 16/10/2024
  */
 package bloomera.praceando.praceandoapimg.model;
 
@@ -23,8 +23,8 @@ import java.util.List;
 @Setter
 @ToString
 @EqualsAndHashCode
-@Document(collection = "avaliacao")
-@Schema(description = "Representa a avaliação de eventos no sistema Praceando.")
+@Document(collection = "conquista")
+@Schema(description = "Representa as conquistas a serem alcançadas no sistema Praceando.")
 public class Conquista {
     @Id
     @Schema(description = "Identificador único da conquista.", example = "66fd42eb50119ee6449ea103")
