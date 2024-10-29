@@ -8,6 +8,7 @@
 package bloomera.praceando.praceandoapimg.repository;
 
 import bloomera.praceando.praceandoapimg.model.Avaliacao;
+import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
@@ -17,4 +18,12 @@ public interface AvaliacaoRepository extends MongoRepository<Avaliacao, Long> {
     Optional<Avaliacao> findByIdAvaliacao(Long idAvaliacao);
     List<Avaliacao> findAvaliacaosByCdEventoOrderByIdAvaliacao(Long cdEvento);
     Optional<Avaliacao> findFirstByCdEventoAndCdUsuario(Long cdEvento, Long cdUsuario);
+
+    @Aggregation(pipeline = {
+            "{ '$match': { 'cd_evento': ?0 } }",
+            "{'$group': {'_id': 1, 'media_nota': {'$avg': '$nota'}}}"
+    })
+    Double findAverageRatingByIdEvento(Long cdEvento);
+
+
 }

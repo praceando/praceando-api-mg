@@ -9,8 +9,10 @@ package bloomera.praceando.praceandoapimg.controller;
 
 import bloomera.praceando.praceandoapimg.model.Conquista;
 import bloomera.praceando.praceandoapimg.service.ConquistaService;
+import bloomera.praceando.praceandoapimg.service.CounterService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,10 +29,12 @@ import java.util.List;
 public class ConquistaController {
 
     private final ConquistaService conquistaService;
+    private final CounterService counterService;
 
     @Autowired
-    public ConquistaController(ConquistaService conquistaService) {
+    public ConquistaController(ConquistaService conquistaService, CounterService counterService) {
         this.conquistaService = conquistaService;
+        this.counterService = counterService;
     }
 
     @GetMapping("/read")
@@ -54,8 +58,17 @@ public class ConquistaController {
             @ApiResponse(responseCode = "201", description = "Conquista inserida com sucesso"),
             @ApiResponse(responseCode = "400", description = "Erro na requisição")
     })
-    public ResponseEntity<?> inserirConquista(@RequestBody Conquista conquista) {
+    public ResponseEntity<?> inserirConquista(@RequestBody
+                                                  @Schema(example = "{\n" +
+                                                          "  \"nmConquista\": \"Aventurante do Parque\",\n" +
+                                                          "  \"dsConquista\": \"Participe de 5 eventos realizados em parques diferentes e explore a diversidade de atividades oferecidas.\",\n" +
+                                                          "  \"nmTipo\": \"Consumidor\",\n" +
+                                                          "  \"qtPolen\": 50\n" +
+                                                          "}") Conquista conquista) {
         try {
+            Long novoId = counterService.getNextSequenceValue("conquista");
+            conquista.setIdConquista(novoId);
+
             Conquista novaConquista = conquistaService.saveConquista(conquista);
             return ResponseEntity.status(HttpStatus.CREATED).body(novaConquista);
         } catch (Exception e) {

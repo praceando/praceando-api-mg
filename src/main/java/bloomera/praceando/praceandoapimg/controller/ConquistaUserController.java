@@ -10,8 +10,10 @@ package bloomera.praceando.praceandoapimg.controller;
 import bloomera.praceando.praceandoapimg.model.Conquista;
 import bloomera.praceando.praceandoapimg.model.ConquistaUser;
 import bloomera.praceando.praceandoapimg.service.ConquistaUserService;
+import bloomera.praceando.praceandoapimg.service.CounterService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,10 +30,12 @@ import java.util.List;
 public class ConquistaUserController {
 
     private final ConquistaUserService conquistaUserService;
+    private final CounterService counterService;
 
     @Autowired
-    public ConquistaUserController(ConquistaUserService conquistaUserService) {
+    public ConquistaUserController(ConquistaUserService conquistaUserService, CounterService counterService) {
         this.conquistaUserService = conquistaUserService;
+        this.counterService = counterService;
     }
 
     @GetMapping("/read/{cdUsuario}")
@@ -55,8 +59,15 @@ public class ConquistaUserController {
             @ApiResponse(responseCode = "201", description = "Conquista de usuário inserida com sucesso"),
             @ApiResponse(responseCode = "400", description = "Erro na requisição")
     })
-    public ResponseEntity<?> inserirConquistaUsuario(@RequestBody ConquistaUser conquistaUser) {
+    public ResponseEntity<?> inserirConquistaUsuario(@RequestBody
+                                                         @Schema(example = "{\n" +
+                                                                 "  \"cdUsuario\": 1,\n" +
+                                                                 "  \"cdConquista\": 1\n" +
+                                                                 "}")ConquistaUser conquistaUser) {
         try {
+            Long novoId = counterService.getNextSequenceValue("conquista_user");
+            conquistaUser.setIdConquistaUser(novoId);
+
             ConquistaUser novaConquistaUser = conquistaUserService.saveConquistaUser(conquistaUser);
             return ResponseEntity.status(HttpStatus.CREATED).body(novaConquistaUser);
         } catch (Exception e) {

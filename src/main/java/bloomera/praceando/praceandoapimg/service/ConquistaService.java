@@ -3,7 +3,7 @@
  * Description: Service for the Conquista entity.
  * Author: Camilla Ucci de Menezes
  * Creation Date: 09/10/2024
- * Last Updated: 13/10/2024
+ * Last Updated: 29/10/2024
  */
 package bloomera.praceando.praceandoapimg.service;
 
@@ -68,7 +68,13 @@ public class ConquistaService {
             existingConquista.setNmConquista(conquista.getNmConquista());
             existingConquista.setDsConquista(conquista.getDsConquista());
             existingConquista.setNmTipo(conquista.getNmTipo());
-            existingConquista.setQtPolen(conquista.getQtPolen());
+            if (conquista.getQtPolen() != null) {
+                existingConquista.setQtPolen(conquista.getQtPolen());
+            }
+
+            if (conquista.getIdAvatar() != null) {
+                existingConquista.setIdAvatar(conquista.getIdAvatar());
+            }
             return conquistaRepository.save(existingConquista);
         } else {
             return null;

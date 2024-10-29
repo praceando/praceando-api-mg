@@ -73,8 +73,17 @@ public class RecorrenciaService {
         Recorrencia existingRecorrencia = getRecorrenciaById(id);
         if (existingRecorrencia != null) {
             existingRecorrencia.setNmTipo(recorrencia.getNmTipo());
-            existingRecorrencia.setDsDiasDaSemana(recorrencia.getDsDiasDaSemana());
+            existingRecorrencia.setDsDiasSemana(recorrencia.getDsDiasSemana());
             existingRecorrencia.setIdEvento(recorrencia.getIdEvento());
+
+            if (recorrencia.getDsDiasSemana() != null) {
+                existingRecorrencia.setDsDiasSemana(recorrencia.getDsDiasSemana());
+            }
+
+            if (recorrencia.getNrDiaMes() != null) {
+                existingRecorrencia.setNrDiaMes(recorrencia.getNrDiaMes());
+            }
+
             return recorrenciaRepository.save(existingRecorrencia);
         } else {
             return null;

@@ -3,7 +3,7 @@
  * Description: Service for the Avaliacao entity.
  * Author: Camilla Ucci de Menezes
  * Creation Date: 03/10/2024
- * Last Updated: 16/10/2024
+ * Last Updated: 29/10/2024
  */
 package bloomera.praceando.praceandoapimg.service;
 
@@ -38,6 +38,13 @@ public class AvaliacaoService {
     public Avaliacao getAvaliacaoById(Long id) {
         Optional<Avaliacao> avaliacao = avaliacaoRepository.findByIdAvaliacao(id);
         return avaliacao.orElse(null);
+    }
+
+    /**
+     * @return média de avaliações pelo id do evento
+     */
+    public Double getMean(Long cdEvento) {
+        return avaliacaoRepository.findAverageRatingByIdEvento(cdEvento);
     }
 
     /**
