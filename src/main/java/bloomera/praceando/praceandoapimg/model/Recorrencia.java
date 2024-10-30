@@ -3,7 +3,7 @@
  * Description: Model for the Recorrencia document.
  * Author: Camilla Ucci de Menezes
  * Creation Date: 03/10/2024
- * Last Updated: 16/10/2024
+ * Last Updated: 29/10/2024
  */
 package bloomera.praceando.praceandoapimg.model;
 
@@ -39,9 +39,13 @@ public class Recorrencia {
     @Field(name = "nm_tipo")
     private String nmTipo;
 
-    @Schema(description = "Dias da semana em que a recorrência ocorre.", example = "[1, 2, 3]")
+    @Schema(description = "Lista de dias da semana para recorrência semanal.", example = "[\"Segunda-feira\", \"Quarta-feira\"]")
     @Field(name = "ds_dias_semana")
-    private List<String> dsDiasDaSemana;
+    private List<String> dsDiasSemana;
+
+    @Schema(description = "Dia do mês para recorrência mensal.", example = "15")
+    @Field(name = "nr_dia_mes")
+    private Integer nrDiaMes;
 
     @NotNull(message = "O código do evento da recorrência ('id_evento') não pode estar vazio.")
     @Schema(description = "Código do evento associado à recorrência.", example = "1")

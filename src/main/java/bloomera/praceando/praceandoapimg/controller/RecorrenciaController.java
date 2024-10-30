@@ -8,9 +8,11 @@
 package bloomera.praceando.praceandoapimg.controller;
 
 import bloomera.praceando.praceandoapimg.model.Recorrencia;
+import bloomera.praceando.praceandoapimg.service.CounterService;
 import bloomera.praceando.praceandoapimg.service.RecorrenciaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,10 +29,12 @@ import java.util.List;
 public class RecorrenciaController {
 
     private final RecorrenciaService recorrenciaService;
+    private final CounterService counterService;
 
     @Autowired
-    public RecorrenciaController(RecorrenciaService recorrenciaService) {
+    public RecorrenciaController(RecorrenciaService recorrenciaService, CounterService counterService) {
         this.recorrenciaService = recorrenciaService;
+        this.counterService = counterService;
     }
 
     @GetMapping("/read")
@@ -54,8 +58,20 @@ public class RecorrenciaController {
             @ApiResponse(responseCode = "201", description = "Recorrência criada com sucesso"),
             @ApiResponse(responseCode = "400", description = "Erro na requisição")
     })
-    public ResponseEntity<?> inserirRecorrencia(@RequestBody Recorrencia recorrencia) {
+    public ResponseEntity<?> inserirRecorrencia(@RequestBody
+                                                    @Schema(example = "{\n" +
+                                                            "  \"nmTipo\": \"semanal\",\n" +
+                                                            "  \"dsDiasDaSemana\": [\n" +
+                                                            "    1,\n" +
+                                                            "    2,\n" +
+                                                            "    3\n" +
+                                                            "  ],\n" +
+                                                            "  \"idEvento\": 1\n" +
+                                                            "}") Recorrencia recorrencia) {
         try {
+            Long novoId = counterService.getNextSequenceValue("recorrencia");
+            recorrencia.setIdRecorrencia(novoId);
+
             Recorrencia novaRecorrencia = recorrenciaService.saveRecorrencia(recorrencia);
             return ResponseEntity.status(HttpStatus.CREATED).body(novaRecorrencia);
         } catch (Exception e) {

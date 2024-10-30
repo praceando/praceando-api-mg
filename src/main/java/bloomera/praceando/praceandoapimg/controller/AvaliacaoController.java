@@ -9,8 +9,10 @@ package bloomera.praceando.praceandoapimg.controller;
 
 import bloomera.praceando.praceandoapimg.model.Avaliacao;
 import bloomera.praceando.praceandoapimg.service.AvaliacaoService;
+import bloomera.praceando.praceandoapimg.service.CounterService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,10 +31,13 @@ import java.util.Map;
 public class AvaliacaoController {
 
     private final AvaliacaoService avaliacaoService;
+    private final CounterService counterService;
+
 
     @Autowired
-    public AvaliacaoController(AvaliacaoService avaliacaoService) {
+    public AvaliacaoController(AvaliacaoService avaliacaoService, CounterService counterService) {
         this.avaliacaoService = avaliacaoService;
+        this.counterService = counterService;
     }
 
     @GetMapping("/read/{cdEvento}/{cdUsuario}")
@@ -66,8 +71,17 @@ public class AvaliacaoController {
             @ApiResponse(responseCode = "201", description = "Avaliação inserida com sucesso"),
             @ApiResponse(responseCode = "400", description = "Erro na requisição")
     })
-    public ResponseEntity<?> inserirAvaliacao(@RequestBody Avaliacao avaliacao) {
+    public ResponseEntity<?> inserirAvaliacao(@RequestBody
+                                                  @Schema(example = "{\n" +
+                                                          "  \"cdEvento\": 1,\n" +
+                                                          "  \"cdUsuario\": 1,\n" +
+                                                          "  \"nrNota\": 5,\n" +
+                                                          "  \"dsComentario\": \"Evento incrível! Superou minhas expectativas.\"\n" +
+                                                          "}") Avaliacao avaliacao) {
         try {
+            Long novoId = counterService.getNextSequenceValue("avaliacao");
+            avaliacao.setIdAvaliacao(novoId);
+
             Avaliacao novaAvaliacao = avaliacaoService.saveAvaliacao(avaliacao);
             return ResponseEntity.status(HttpStatus.CREATED).body(novaAvaliacao);
         } catch (Exception e) {
@@ -88,6 +102,21 @@ public class AvaliacaoController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Avaliação não encontrada.");
         }
+    }
+
+    @GetMapping("/mean/{cdEvento}")
+    @Operation(summary = "Busca média pelo ID", description = "Retorna a média das avaliações do evento por seu ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Média encontrada com sucesso")
+    })
+    public ResponseEntity<?> obterMediaAvaliacao(@PathVariable Long cdEvento) {
+        Map<String, String> response = new HashMap<>();
+
+        Double mean = avaliacaoService.getMean(cdEvento);
+        String formatedMean = mean != null ? String.format("%.1f", mean) : "0.00";
+
+        response.put("media", formatedMean);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/delete/{id}")

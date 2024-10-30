@@ -3,12 +3,11 @@
  * Description: Model for the Avaliacao document.
  * Author: Camilla Ucci de Menezes
  * Creation Date: 03/10/2024
- * Last Updated: 16/10/2024
+ * Last Updated: 29/10/2024
  */
 package bloomera.praceando.praceandoapimg.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.data.annotation.Id;
@@ -16,7 +15,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
