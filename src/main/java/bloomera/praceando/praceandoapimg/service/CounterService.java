@@ -27,6 +27,10 @@ public class CounterService {
         this.counterRepository = counterRepository;
     }
 
+    /**
+     * @param sequenceName o nome da sequência para a qual o próximo valor é obtido.
+     * @return o próximo valor da sequência como um número long.
+     */
     @Transactional
     public long getNextSequenceValue(String sequenceName) {
         Counter counter = counterRepository.findById(sequenceName).orElse(new Counter());
